@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" type="text/css" href="bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="dark.css">
+
+		<style type="text/css">
+			body{
+				padding-top: 30px;
+			}
+			.btn {
+				margin: 3px;
+			}
+
+			.button-container{
+				padding: 5px 5px 10px 5px;
+			}
+		</style>
+	</head>
+
+	<body class="container">
+		<div ng-controller="apiTb" class="row">
+
+			<div class="panel panel-default">
+			  <div class="panel-heading">API类型</div>
+			  <div class="panel-body">
+					<div class="col-md-6" ng-repeat="category in categories">
+						<div class="button-head">{{category.name}}</div>
+						<div class="button-container well">
+							<button class="btn btn-default" ng-repeat="button in category.buttons" ng-click="renderForm(button.form)">{{button.name}}</button>
+						</div>
+					</div>
+			  </div>
+			</div>
+			
+			<!-- 提交请求区域 -->
+			<div ng-controller="requestCtrl">
+				<div class="panel panel-default">
+				  <div class="panel-heading">API 表单项</div>
+				  <div class="panel-body">
+				    	<div  class="col-md-12">
+							<form class="form-horizontal" action="{{form.action}}" method="{{form.method}}" onsubmit="return false;">
+								<dl class="dl-horizontal text-primary">
+									<dt>请求连接:</dt>
+									<dd>{{hostPrefix+form.action}}</dd>
+									<dt>请求方法:</dt>
+									<dd>{{form.method}}</dd>
+								</dl>
+
+								<div class="form-group" ng-repeat="item in form.items">
+									<label class="col-sm-2 control-label">{{item.name}}</label>
+									<div class="col-sm-5">
+								    	<input type="text" class="form-control" placeholder="{{item.name}}" name="{{item.name}}" ng-model="item.value" />
+								    </div>
+									<div class="col-sm-5">
+										{{item.comment}}
+									</div>
+								 </div>
+
+								<div class="form-group">
+								    <div class="col-sm-offset-2 col-sm-10">
+								      <button type="submit" class="btn btn-default" ng-click="doSubmit($event)">提交</button>
+								    </div>
+								</div>
+							</form>
+						</div>
+				  </div>
+				</div>
+
+				<div class="panel panel-default">
+				  <div class="panel-heading">输入-输出</div>
+				  <div class="panel-body">
+			    		<div class="jsonBlock">
+			    			<div class="col-md-12">
+			    				<!--
+			    				<pre>
+									<code jsonwatch class="json" data-result="postData"></code>
+								</pre>
+								-->
+								<pre>
+									<code jsonwatch class="json" data-result="requestResult"></code>
+								</pre>
+			    			</div>
+						</div>
+				  </div>
+				</div>
+			</div>
+		</div>
+		<!--
+			1. 在js/modules中按照格式添加测试API
+			2. 在js/config.js 中加入 新加入的API文件
+		-->
+		<script type="text/javascript">
+			var hostPrefix = '';
+		</script>
+		<script type="text/javascript" src="require.js"></script>
+		<script type="text/javascript" src="js/main.js" ></script>
+	</body>
+</html>
